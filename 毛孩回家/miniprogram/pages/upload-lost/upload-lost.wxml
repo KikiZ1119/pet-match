@@ -1,0 +1,398 @@
+<!-- pages/upload-lost/upload-lost.wxml -->
+<view class="page-upload-lost">
+  <scroll-view class="form-scroll" scroll-y="{{true}}" bindscrolltolower="onScrollToLower">
+
+    <!-- 1. 上传照片 -->
+    <view class="card">
+      <view class="section-header">
+        <text class="section-title-icon">📷</text>
+        <text class="section-title">上传照片</text>
+        <text class="section-tip">（最多3张）</text>
+      </view>
+      <view class="photo-grid">
+        <view
+          class="photo-item"
+          wx:for="{{images}}"
+          wx:key="index"
+        >
+          <image class="photo-preview" src="{{item}}" mode="aspectFill" />
+          <view class="photo-delete" bindtap="onDeleteImage" data-index="{{index}}">
+            <text class="delete-icon">✕</text>
+          </view>
+        </view>
+        <view class="upload-area" wx:if="{{images.length < 3}}" bindtap="onChooseImage">
+          <text class="icon">+</text>
+          <text class="text">上传照片</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 2. 基本信息 -->
+    <view class="card">
+      <view class="section-header">
+        <text class="section-title-icon">🐾</text>
+        <text class="section-title">基本信息</text>
+      </view>
+
+      <!-- 动物类型 -->
+      <view class="form-group">
+        <text class="form-label">动物类型</text>
+        <view class="tag-group">
+          <view
+            class="tag {{formData.animalType === item.value ? 'active' : ''}}"
+            wx:for="{{categories.animalType}}"
+            wx:key="value"
+            bindtap="onSelectTag"
+            data-group="animalType"
+            data-value="{{item.value}}"
+          >
+            {{item.icon}} {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 品种（根据动物类型动态显示） -->
+      <view class="form-group" wx:if="{{formData.animalType}}">
+        <text class="form-label">品种</text>
+        <view class="tag-group">
+          <view
+            class="tag {{formData.breed === item.value ? 'active' : ''}}"
+            wx:for="{{categories.breed[formData.animalType] || []}}"
+            wx:key="value"
+            bindtap="onSelectTag"
+            data-group="breed"
+            data-value="{{item.value}}"
+          >{{item.label}}</view>
+        </view>
+        <!-- 手动填写品种（选"其他品种"时出现） -->
+        <input
+          class="input-field"
+          wx:if="{{formData.breed === 'other_cat' || formData.breed === 'other_dog'}}"
+          placeholder="请填写具体品种名称"
+          value="{{formData.customBreed}}"
+          bindinput="onInputCustomBreed"
+          style="margin-top: 16rpx;"
+        />
+      </view>
+
+      <!-- 颜色 -->
+      <view class="form-group">
+        <text class="form-label">颜色</text>
+        <view class="tag-group">
+          <view
+            class="tag {{formData.color === item.value ? 'active' : ''}}"
+            wx:for="{{categories.color}}"
+            wx:key="value"
+            bindtap="onSelectTag"
+            data-group="color"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 体型 -->
+      <view class="form-group">
+        <text class="form-label">体型</text>
+        <view class="tag-group">
+          <view
+            class="tag {{formData.size === item.value ? 'active' : ''}}"
+            wx:for="{{categories.size}}"
+            wx:key="value"
+            bindtap="onSelectTag"
+            data-group="size"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+            <text class="tag-desc" wx:if="{{item.desc}}">（{{item.desc}}）</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 花纹/花色 -->
+      <view class="form-group">
+        <text class="form-label">花纹/花色</text>
+        <view class="tag-group">
+          <view class="tag {{formData.pattern === item.value ? 'active' : ''}}" wx:for="{{categories.pattern}}" wx:key="value" bindtap="onSelectTag" data-group="pattern" data-value="{{item.value}}">{{item.label}}</view>
+        </view>
+      </view>
+
+      <!-- 性别 -->
+      <view class="form-group">
+        <text class="form-label">性别</text>
+        <view class="tag-group">
+          <view
+            class="tag {{formData.gender === item.value ? 'active' : ''}}"
+            wx:for="{{categories.gender}}"
+            wx:key="value"
+            bindtap="onSelectTag"
+            data-group="gender"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 年龄 -->
+      <view class="form-group">
+        <text class="form-label">估计年龄</text>
+        <view class="tag-group">
+          <view class="tag {{formData.age === item.value ? 'active' : ''}}" wx:for="{{categories.age}}" wx:key="value" bindtap="onSelectTag" data-group="age" data-value="{{item.value}}">{{item.label}}</view>
+        </view>
+      </view>
+
+      <!-- 健康状况 -->
+      <view class="form-group">
+        <text class="form-label">健康状况</text>
+        <view class="tag-group">
+          <view class="tag {{formData.healthStatus === item.value ? 'active' : ''}}" wx:for="{{categories.healthStatus}}" wx:key="value" bindtap="onSelectTag" data-group="healthStatus" data-value="{{item.value}}">{{item.label}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 3. 特征标记 -->
+    <view class="card">
+      <view class="section-header">
+        <text class="section-title-icon">🏷️</text>
+        <text class="section-title">特征标记</text>
+      </view>
+
+      <!-- 是否有项圈 -->
+      <view class="form-group">
+        <text class="form-label">项圈</text>
+        <view class="tag-group">
+          <view
+            class="tag {{formData.hasCollar === item.value ? 'active' : ''}}"
+            wx:for="{{categories.hasCollar}}"
+            wx:key="value"
+            bindtap="onSelectTag"
+            data-group="hasCollar"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 项圈颜色（有条件显示） -->
+      <view class="form-group" wx:if="{{formData.hasCollar === 'yes'}}">
+        <text class="form-label">项圈颜色</text>
+        <view class="tag-group">
+          <view
+            class="tag {{formData.collarColor === item.value ? 'active' : ''}}"
+            wx:for="{{categories.collarColor}}"
+            wx:key="value"
+            bindtap="onSelectTag"
+            data-group="collarColor"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 项圈类型（有条件显示） -->
+      <view class="form-group" wx:if="{{formData.hasCollar === 'yes'}}">
+        <text class="form-label">项圈类型</text>
+        <view class="tag-group">
+          <view class="tag {{formData.collarType === item.value ? 'active' : ''}}" wx:for="{{categories.collarType}}" wx:key="value" bindtap="onSelectTag" data-group="collarType" data-value="{{item.value}}">{{item.label}}</view>
+        </view>
+      </view>
+
+      <!-- 狗牌/铭牌 -->
+      <view class="form-group" wx:if="{{formData.hasCollar === 'yes'}}">
+        <text class="form-label">狗牌/铭牌</text>
+        <view class="tag-group">
+          <view class="tag {{formData.hasTag === item.value ? 'active' : ''}}" wx:for="{{categories.hasTag}}" wx:key="value" bindtap="onSelectTag" data-group="hasTag" data-value="{{item.value}}">{{item.label}}</view>
+        </view>
+      </view>
+
+      <!-- 是否有铃铛 -->
+      <view class="form-group">
+        <text class="form-label">铃铛</text>
+        <view class="tag-group">
+          <view
+            class="tag {{formData.hasCollarBell === item.value ? 'active' : ''}}"
+            wx:for="{{categories.hasCollarBell}}"
+            wx:key="value"
+            bindtap="onSelectTag"
+            data-group="hasCollarBell"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 是否绝育 -->
+      <view class="form-group">
+        <text class="form-label">绝育</text>
+        <view class="tag-group">
+          <view
+            class="tag {{formData.isNeutered === item.value ? 'active' : ''}}"
+            wx:for="{{categories.isNeutered}}"
+            wx:key="value"
+            bindtap="onSelectTag"
+            data-group="isNeutered"
+            data-value="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 耳朵类型 -->
+      <view class="form-group">
+        <text class="form-label">耳朵类型</text>
+        <view class="tag-group">
+          <view class="tag {{formData.earType === item.value ? 'active' : ''}}" wx:for="{{categories.earType}}" wx:key="value" bindtap="onSelectTag" data-group="earType" data-value="{{item.value}}">{{item.label}}</view>
+        </view>
+      </view>
+
+      <!-- 尾巴类型 -->
+      <view class="form-group">
+        <text class="form-label">尾巴类型</text>
+        <view class="tag-group">
+          <view class="tag {{formData.tailType === item.value ? 'active' : ''}}" wx:for="{{categories.tailType}}" wx:key="value" bindtap="onSelectTag" data-group="tailType" data-value="{{item.value}}">{{item.label}}</view>
+        </view>
+      </view>
+
+      <!-- 性格特征 -->
+      <view class="form-group">
+        <text class="form-label">性格特征</text>
+        <view class="tag-group">
+          <view class="tag {{formData.personality === item.value ? 'active' : ''}}" wx:for="{{categories.personality}}" wx:key="value" bindtap="onSelectTag" data-group="personality" data-value="{{item.value}}">{{item.label}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 4. 走丢地点 -->
+    <view class="card">
+      <view class="section-header">
+        <text class="section-title-icon">📍</text>
+        <text class="section-title">走丢地点</text>
+      </view>
+      <view class="location-picker" bindtap="onChooseLocation">
+        <view class="location-info" wx:if="{{formData.locationName}}">
+          <text class="location-icon">📍</text>
+          <view class="location-texts">
+            <text class="location-name">{{formData.locationName}}</text>
+            <text class="location-address" wx:if="{{formData.locationAddress}}">{{formData.locationAddress}}</text>
+          </view>
+        </view>
+        <view class="location-placeholder" wx:else>
+          <text class="location-icon">📍</text>
+          <text class="location-text">点击选择走丢地点</text>
+        </view>
+        <text class="location-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 5. 走丢时间 -->
+    <view class="card">
+      <view class="section-header">
+        <text class="section-title-icon">📅</text>
+        <text class="section-title">走丢时间</text>
+      </view>
+      <view class="form-group">
+        <picker
+          mode="date"
+          value="{{formData.lostDate}}"
+          start="2020-01-01"
+          end="{{today}}"
+          bindchange="onChooseDate"
+        >
+          <view class="date-picker {{formData.lostDate ? '' : 'placeholder'}}">
+            <text wx:if="{{formData.lostDate}}">{{formData.lostDate}}</text>
+            <text wx:else>点击选择走丢日期</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 6. 详细描述 -->
+    <view class="card">
+      <view class="section-header">
+        <text class="section-title-icon">📝</text>
+        <text class="section-title">详细描述</text>
+      </view>
+      <view class="form-group">
+        <textarea
+          class="desc-textarea"
+          placeholder="请描述宠物特征、走丢时的情况、性格特点、特殊标记等有助于识别的信息..."
+          value="{{formData.description}}"
+          bindinput="onInputDescription"
+          maxlength="{{500}}"
+          auto-height
+        />
+        <text class="char-count">{{formData.description.length || 0}}/500</text>
+      </view>
+    </view>
+
+    <!-- 7. 联系方式 -->
+    <view class="card">
+      <view class="section-header">
+        <text class="section-title-icon">📞</text>
+        <text class="section-title">联系方式</text>
+      </view>
+
+      <!-- 手机号 -->
+      <view class="form-group">
+        <text class="form-label">手机号</text>
+        <input
+          class="input-field"
+          placeholder="请输入手机号码"
+          type="number"
+          value="{{formData.phone}}"
+          bindinput="onInputPhone"
+          maxlength="{{11}}"
+        />
+      </view>
+
+      <!-- 微信号 -->
+      <view class="form-group">
+        <text class="form-label">微信号 <text class="form-label-optional">（选填）</text></text>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="请输入微信号"
+          value="{{formData.wechat}}"
+          bindinput="onInputWechat"
+        />
+      </view>
+    </view>
+
+    <!-- 8. 悬赏金额 -->
+    <view class="card">
+      <view class="section-header">
+        <text class="section-title-icon">💰</text>
+        <text class="section-title">悬赏金额</text>
+        <text class="section-tip">（选填）</text>
+      </view>
+      <view class="form-group">
+        <view class="reward-input-wrapper">
+          <text class="reward-prefix">¥</text>
+          <input
+            class="input-field reward-input"
+            type="digit"
+            placeholder="请输入悬赏金额，如 500"
+            value="{{formData.reward}}"
+            bindinput="onInputReward"
+          />
+        </view>
+        <text class="reward-tip">设置悬赏可以提高找到宠物的几率</text>
+      </view>
+    </view>
+
+    <!-- 9. 提交按钮 -->
+    <view class="submit-section">
+      <button class="btn-primary" bindtap="onSubmit" loading="{{submitting}}" disabled="{{submitting}}">
+        {{submitting ? '提交中...' : '确认发布'}}
+      </button>
+      <text class="submit-tip">提交即表示您同意《用户协议》和《隐私政策》</text>
+    </view>
+
+  </scroll-view>
+</view>

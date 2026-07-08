@@ -1,0 +1,16 @@
+<!-- components/search-bar/search-bar.wxml -->
+<view class="search-bar">
+  <view class="search-input-box">
+    <text class="search-icon">🔍</text>
+    <input 
+      class="search-input" 
+      placeholder="搜索品种、颜色、地点..." 
+      value="{{keyword}}"
+      bindinput="onInput"
+      bindconfirm="onSearch"
+      confirm-type="search"
+    />
+    <text class="search-clear" wx:if="{{keyword}}" bindtap="onClear">✕</text>
+  </view>
+  <view class="search-btn" wx:if="{{showCancel}}" bindtap="onCancel">取消</view>
+</view>

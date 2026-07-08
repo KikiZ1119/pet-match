@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "捡到的动物",
+  "usingComponents": {
+    "classify-bar": "/components/classify-bar/classify-bar",
+    "animal-card": "/components/animal-card/animal-card"
+  },
+  "enablePullDownRefresh": false,
+  "backgroundTextStyle": "dark"
+}

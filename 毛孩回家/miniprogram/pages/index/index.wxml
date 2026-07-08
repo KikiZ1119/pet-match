@@ -1,0 +1,115 @@
+<!-- pages/index/index.wxml - 首页 -->
+<view class="page-index">
+  
+  <!-- 轮播图区域 -->
+  <swiper 
+    class="banner-swiper" 
+    indicator-dots="{{true}}" 
+    indicator-color="rgba(255,255,255,0.4)" 
+    indicator-active-color="#4CAF50"
+    autoplay="{{true}}" 
+    interval="{{4000}}" 
+    duration="{{500}}" 
+    circular="{{true}}"
+    bindchange="onSwiperChange"
+  >
+    <swiper-item wx:for="{{banners}}" wx:key="index">
+      <view class="banner-item" bindtap="onBannerTap" data-index="{{index}}">
+        <image class="banner-image" src="{{item.image}}" mode="aspectFill" lazy-load />
+        <view class="banner-overlay"></view>
+        <view class="banner-content">
+          <text class="banner-tag {{item.type === 'lost' ? 'tag-lost' : 'tag-found'}}">{{item.type === 'lost' ? '走丢' : '捡到'}}</text>
+          <text class="banner-title">{{item.title}}</text>
+          <text class="banner-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- 核心功能区域 -->
+  <view class="function-section">
+    <view class="function-grid">
+      <view class="function-card function-card-found" bindtap="goFound">
+        <view class="card-icon-wrapper">
+          <text class="card-icon">🔍</text>
+        </view>
+        <text class="card-title">发布捡到</text>
+        <text class="card-desc">我捡到了宠物</text>
+      </view>
+      <view class="function-card function-card-lost" bindtap="goLost">
+        <view class="card-icon-wrapper">
+          <text class="card-icon">😢</text>
+        </view>
+        <text class="card-title">发布丢失</text>
+        <text class="card-desc">我的宠物走丢了</text>
+      </view>
+      <view class="function-card function-card-match" bindtap="goMatch">
+        <view class="card-icon-wrapper">
+          <text class="card-icon">🤝</text>
+        </view>
+        <text class="card-title">智能匹配</text>
+        <text class="card-desc">AI匹配找回</text>
+      </view>
+      <view class="function-card function-card-adopt" bindtap="goAdopt">
+        <view class="card-icon-wrapper">
+          <text class="card-icon">🏠</text>
+        </view>
+        <text class="card-title">领养中心</text>
+        <text class="card-desc">给宠物一个家</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最新动态区域 -->
+  <view class="news-section">
+    <view class="section-header">
+      <view class="section-title-wrap">
+        <text class="section-title-icon">📋</text>
+        <text class="section-title">最新动态</text>
+      </view>
+      <view class="section-more" bindtap="goMore">
+        <text class="more-text">查看更多</text>
+        <text class="more-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 分类栏 -->
+    <classify-bar 
+      filterGroups="{{filterGroups}}"
+      currentTab="{{currentTab}}"
+      bind:tabchange="onTabChange"
+      bind:search="onSearch"
+    />
+
+    <!-- 动物卡片列表 -->
+    <view class="animal-list">
+      <view wx:for="{{animalList}}" wx:key="id" class="animal-item">
+        <animal-card 
+          animal="{{item}}" 
+          colorLabel="{{item.colorLabel}}"
+          sizeLabel="{{item.sizeLabel}}"
+          genderLabel="{{item.genderLabel}}"
+          bind:click="onAnimalClick"
+        />
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{animalList.length > 0}}">
+      <text wx:if="{{!hasMore}}">— 没有更多了 —</text>
+      <text wx:else bindtap="loadMore">点击加载更多</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{animalList.length === 0 && !loading}}">
+      <text class="icon">🐾</text>
+      <text class="text">暂无最新动态</text>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="load-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+
+</view>

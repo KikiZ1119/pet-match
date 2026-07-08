@@ -1,0 +1,9 @@
+{
+  "name": "getMatchList",
+  "version": "1.0.0",
+  "description": "智能匹配 - 计算捡到和走丢动物的匹配度",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

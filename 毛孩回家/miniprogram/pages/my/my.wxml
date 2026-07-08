@@ -1,0 +1,61 @@
+<view class="page-my">
+  <!-- 用户信息区域 -->
+  <view class="user-section">
+    <view class="user-card">
+      <view class="user-avatar" wx:if="{{userInfo}}">
+        <image src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+      </view>
+      <view class="user-avatar default" wx:else>
+        <text class="avatar-icon">🐾</text>
+      </view>
+      <view class="user-info" wx:if="{{hasUserInfo}}">
+        <text class="user-name">{{userInfo.nickName || '用户'}}</text>
+        <text class="user-desc">已发布 {{stats.totalCount}} 条信息</text>
+      </view>
+      <view class="user-info" wx:else>
+        <button class="login-btn" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">
+          点击授权登录
+        </button>
+        <text class="user-desc">登录后可管理发布记录</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计数据 -->
+  <view class="stats-section">
+    <view class="stat-item">
+      <text class="stat-number">{{stats.foundCount}}</text>
+      <text class="stat-label">捡到发布</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-number">{{stats.lostCount}}</text>
+      <text class="stat-label">走丢发布</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-number">{{stats.totalCount}}</text>
+      <text class="stat-label">全部发布</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-item" wx:for="{{menuList}}" wx:key="text" data-text="{{item.text}}" bindtap="onMenuTap">
+      <view class="menu-left">
+        <text class="menu-icon">{{item.icon}}</text>
+        <text class="menu-text">{{item.text}}</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="about-section" bindtap="onAbout">
+    <text class="about-text">关于毛孩回家</text>
+    <text class="about-version">v1.0</text>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-text">用爱为流浪动物点亮回家路</view>
+</view>

@@ -1,0 +1,9 @@
+{
+  "name": "getAdoptList",
+  "version": "1.0.0",
+  "description": "获取待领养动物列表",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

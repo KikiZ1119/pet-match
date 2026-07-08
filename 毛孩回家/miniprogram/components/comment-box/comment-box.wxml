@@ -1,0 +1,33 @@
+<view class="comment-box">
+  <view class="comment-header">
+    <text class="comment-title">💬 留言（{{comments.length}}）</text>
+  </view>
+
+  <!-- 评论列表 -->
+  <view class="comment-list" wx:if="{{comments.length > 0}}">
+    <view class="comment-item" wx:for="{{comments}}" wx:key="index">
+      <view class="comment-avatar">
+        <text class="avatar-text">{{item._openid ? item._openid.slice(-2) : '??'}}</text>
+      </view>
+      <view class="comment-content">
+        <view class="comment-body">
+          <text class="comment-text">{{item.content}}</text>
+        </view>
+        <view class="comment-footer">
+          <text class="comment-time">{{formatTime(item.createTime)}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="comment-empty" wx:if="{{comments.length === 0}}">
+    <text class="empty-text">暂无留言，来说两句吧</text>
+  </view>
+
+  <!-- 输入框 -->
+  <view class="comment-input-area">
+    <input class="comment-input" placeholder="输入留言..." value="{{inputValue}}" bindinput="onInput" maxlength="{{200}}" />
+    <button class="comment-submit" size="mini" bindtap="onSubmit" disabled="{{!inputValue.trim()}}">发送</button>
+  </view>
+</view>

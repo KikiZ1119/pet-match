@@ -1,0 +1,9 @@
+{
+  "name": "uploadAnimal",
+  "version": "1.0.0",
+  "description": "上传动物信息到数据库",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

@@ -1,0 +1,78 @@
+<!-- pages/adopt/adopt.wxml - 领养区 -->
+<view class="adopt-page">
+  <!-- 顶部 Tab 切换 -->
+  <view class="tab-bar">
+    <view
+      class="tab-item {{currentTab === 'all' ? 'active' : ''}}"
+      data-tab="all"
+      bindtap="onTabChange"
+    >
+      <text class="tab-text">全部</text>
+    </view>
+    <view
+      class="tab-item {{currentTab === 'cat' ? 'active' : ''}}"
+      data-tab="cat"
+      bindtap="onTabChange"
+    >
+      <text class="tab-text">🐱 猫</text>
+    </view>
+    <view
+      class="tab-item {{currentTab === 'dog' ? 'active' : ''}}"
+      data-tab="dog"
+      bindtap="onTabChange"
+    >
+      <text class="tab-text">🐕 狗</text>
+    </view>
+    <view class="tab-indicator" style="transform: translateX({{tabIndex * 33.33}}%); width: 33.33%;"></view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading && list.length === 0}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在加载...</text>
+  </view>
+
+  <!-- 动物列表 -->
+  <scroll-view
+    class="list-scroll"
+    scroll-y
+    enhanced
+    show-scrollbar="{{false}}"
+    bindscrolltolower="onLoadMore"
+    refresher-enabled="{{true}}"
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+  >
+    <!-- 卡片列表 -->
+    <view class="card-list" wx:if="{{list.length > 0}}">
+      <view
+        class="card-item"
+        wx:for="{{list}}"
+        wx:key="_id"
+      >
+        <animal-card
+          animal="{{item}}"
+          colorLabel="{{item.colorLabel}}"
+          sizeLabel="{{item.sizeLabel}}"
+          genderLabel="{{item.genderLabel}}"
+          bind:click="onCardClick"
+        />
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && list.length === 0 && !loadingMore}}">
+      <text class="icon">🐾</text>
+      <text class="text">暂无待领养的小动物</text>
+      <text class="sub-text">看看走丢和捡到列表，也许能帮上忙</text>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{loadingMore}}">
+      <text>加载更多...</text>
+    </view>
+    <view class="load-more" wx:if="{{!hasMore && list.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+  </scroll-view>
+</view>

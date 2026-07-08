@@ -1,0 +1,44 @@
+<!-- components/animal-card/animal-card.wxml -->
+<view class="animal-card" bindtap="onClick">
+  <view class="card-media">
+    <!-- 图片 -->
+    <image 
+      class="card-image" 
+      src="{{animal.images && animal.images[0] || defaultImage}}" 
+      mode="aspectFill"
+      lazy-load
+    />
+    <!-- 状态标签 -->
+    <view class="card-badges">
+      <view class="badge badge-{{animal.animalType}}">
+        {{animal.animalType === 'cat' ? '🐱 猫' : '🐕 狗'}}
+      </view>
+      <view class="badge badge-status {{animal.status === '待领养' ? 'badge-adopt' : ''}}">
+        {{animal.status}}
+      </view>
+    </view>
+    <!-- 匹配度提示 -->
+    <view class="card-match-rate" wx:if="{{matchRate}}">
+      <text class="match-text">{{matchRate}}%匹配</text>
+    </view>
+  </view>
+
+  <view class="card-body">
+    <view class="card-tags">
+      <text class="tag tag-color" wx:if="{{colorLabel}}">{{colorLabel}}</text>
+      <text class="tag tag-size" wx:if="{{sizeLabel}}">{{sizeLabel}}</text>
+      <text class="tag tag-gender" wx:if="{{genderLabel}}">{{genderLabel}}</text>
+    </view>
+    <view class="card-location" wx:if="{{animal.locationName}}">
+      <text class="icon">📍</text>
+      <text class="text">{{animal.locationName}}</text>
+    </view>
+    <view class="card-time">
+      <text class="icon">🕐</text>
+      <text class="text">{{relativeTime}}</text>
+    </view>
+    <view class="card-desc" wx:if="{{animal.description}}">
+      <text class="text">{{animal.description}}</text>
+    </view>
+  </view>
+</view>

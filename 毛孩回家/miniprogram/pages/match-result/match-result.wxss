@@ -1,0 +1,306 @@
+/* pages/match-result/match-result.wxss - 智能匹配结果页样式 */
+.match-result-page {
+  min-height: 100vh;
+  background: var(--bg-page);
+  padding-bottom: 40rpx;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 200rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 6rpx solid var(--primary-light);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 24rpx;
+  font-size: 28rpx;
+  color: var(--text-light);
+}
+
+/* 源动物信息 */
+.source-section {
+  background: #fff;
+  margin: 20rpx 30rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.section-label {
+  font-size: 26rpx;
+  color: var(--text-light);
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.source-card {
+  display: flex;
+  gap: 24rpx;
+}
+
+.source-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.source-avatar image {
+  width: 100%;
+  height: 100%;
+}
+
+.source-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.source-type {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.source-detail {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+/* 结果标题 */
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx 16rpx;
+}
+
+.result-count {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.match-direction {
+  font-size: 24rpx;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+/* 匹配结果卡片 */
+.result-list {
+  padding: 0 30rpx;
+}
+
+.result-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 匹配目标动物信息 */
+.result-animal {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.result-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.result-avatar image {
+  width: 100%;
+  height: 100%;
+}
+
+.result-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.result-type {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.result-detail {
+  font-size: 22rpx;
+  color: var(--text-light);
+}
+
+/* 匹配进度条 */
+.match-progress-section {
+  margin-bottom: 20rpx;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.progress-label {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.progress-value {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+/* 匹配度颜色 */
+.progress-value.high {
+  color: #4caf50;
+}
+.progress-value.medium {
+  color: #2196f3;
+}
+.progress-value.low {
+  color: #ff9800;
+}
+.progress-value.very_low {
+  color: #9e9e9e;
+}
+
+.progress-bar-bg {
+  height: 16rpx;
+  background: #f0f0f0;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 8rpx;
+  transition: width 0.3s ease;
+}
+
+.progress-bar-fill.high {
+  background: linear-gradient(90deg, #66bb6a, #4caf50);
+}
+.progress-bar-fill.medium {
+  background: linear-gradient(90deg, #64b5f6, #2196f3);
+}
+.progress-bar-fill.low {
+  background: linear-gradient(90deg, #ffb74d, #ff9800);
+}
+.progress-bar-fill.very_low {
+  background: linear-gradient(90deg, #e0e0e0, #9e9e9e);
+}
+
+.match-level-label {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  text-align: right;
+}
+
+.match-level-label.high {
+  color: #4caf50;
+}
+.match-level-label.medium {
+  color: #2196f3;
+}
+.match-level-label.low {
+  color: #ff9800;
+}
+.match-level-label.very_low {
+  color: #9e9e9e;
+}
+
+/* 匹配详情 */
+.match-details {
+  border-top: 2rpx solid var(--border);
+  padding-top: 16rpx;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 12rpx;
+}
+
+.detail-label {
+  width: 120rpx;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.detail-bar-bg {
+  flex: 1;
+  height: 10rpx;
+  background: #f0f0f0;
+  border-radius: 5rpx;
+  overflow: hidden;
+}
+
+.detail-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 5rpx;
+}
+
+.detail-score {
+  width: 80rpx;
+  text-align: right;
+  font-size: 22rpx;
+  color: var(--text-light);
+  flex-shrink: 0;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 150rpx 60rpx;
+}
+
+.empty-state .icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+  opacity: 0.6;
+}
+
+.empty-state .text {
+  font-size: 32rpx;
+  color: var(--text-secondary);
+  margin-bottom: 12rpx;
+}
+
+.empty-state .sub-text {
+  font-size: 26rpx;
+  color: var(--text-light);
+}

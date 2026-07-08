@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "animal-card": "/components/animal-card/animal-card"
+  },
+  "navigationBarTitleText": "领养区",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 200
+}

@@ -1,0 +1,63 @@
+<!-- components/classify-bar/classify-bar.wxml -->
+<!-- 分类筛选栏 - 像淘宝那样按特征分类 -->
+<view class="classify-bar">
+  <!-- 搜索框 -->
+  <view class="search-section" bindtap="onSearch">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">搜索品种、颜色、地点...</text>
+    </view>
+  </view>
+
+  <!-- 快速筛选标签 -->
+  <scroll-view class="filter-scroll" scroll-x enable-flex>
+    <view class="filter-tabs">
+      <view class="filter-tab {{currentTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="onTabChange">
+        <text>全部</text>
+      </view>
+      <view class="filter-tab {{currentTab === 'cat' ? 'active' : ''}}" data-tab="cat" bindtap="onTabChange">
+        <text>🐱 猫</text>
+      </view>
+      <view class="filter-tab {{currentTab === 'dog' ? 'active' : ''}}" data-tab="dog" bindtap="onTabChange">
+        <text>🐕 狗</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 筛选器抽屉 -->
+  <view class="filter-bar">
+    <view class="filter-item {{showFilter ? 'active' : ''}}" bindtap="toggleFilter">
+      <text>筛选</text>
+      <text class="arrow">{{showFilter ? '▲' : '▼'}}</text>
+    </view>
+    <view class="filter-item {{sortBy === 'time' ? 'active' : ''}}" data-sort="time" bindtap="onSortChange">
+      <text>最新</text>
+    </view>
+    <view class="filter-item {{sortBy === 'match' ? 'active' : ''}}" data-sort="match" bindtap="onSortChange">
+      <text>距我最近</text>
+    </view>
+  </view>
+
+  <!-- 展开的高级筛选 -->
+  <view class="filter-panel {{showFilter ? '' : 'hidden'}}">
+    <view class="filter-group" wx:for="{{filterGroups}}" wx:key="key">
+      <view class="filter-group-title">{{group.name}}</view>
+      <view class="tag-group">
+        <view 
+          class="tag {{item.selected ? 'active' : ''}}"
+          wx:for="{{group.options}}" 
+          wx:key="value"
+          data-group="{{group.key}}"
+          data-value="{{item.value}}"
+          bindtap="onFilterSelect"
+        >
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+    <view class="filter-actions">
+      <view class="btn-reset" bindtap="resetFilters">重置</view>
+      <view class="btn-confirm" bindtap="confirmFilters">确定</view>
+    </view>
+  </view>
+</view>

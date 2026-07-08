@@ -1,0 +1,9 @@
+{
+  "name": "searchAnimals",
+  "version": "1.0.0",
+  "description": "搜索动物信息",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

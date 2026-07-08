@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "animal-card": "/components/animal-card/animal-card",
+    "classify-bar": "/components/classify-bar/classify-bar"
+  },
+  "navigationBarTitleText": "毛孩回家",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "onReachBottomDistance": 100
+}

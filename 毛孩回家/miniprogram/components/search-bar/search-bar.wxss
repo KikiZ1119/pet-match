@@ -1,0 +1,40 @@
+/* components/search-bar/search-bar.wxss */
+.search-bar {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  gap: 20rpx;
+}
+
+.search-input-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 50rpx;
+  padding: 16rpx 24rpx;
+}
+
+.search-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  height: 48rpx;
+}
+
+.search-clear {
+  font-size: 28rpx;
+  color: #999;
+  padding: 8rpx;
+}
+
+.search-btn {
+  font-size: 28rpx;
+  color: #4CAF50;
+  white-space: nowrap;
+}

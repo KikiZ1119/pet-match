@@ -1,0 +1,98 @@
+<!-- pages/match-result/match-result.wxml - 智能匹配结果页 -->
+<view class="match-result-page">
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在智能匹配...</text>
+  </view>
+
+  <block wx:else>
+    <!-- 源动物信息卡片 -->
+    <view class="source-section">
+      <text class="section-label">源动物信息</text>
+      <view class="source-card">
+        <view class="source-avatar">
+          <image src="{{sourceAnimal.images && sourceAnimal.images[0] || '/images/default-pet.png'}}" mode="aspectFill"></image>
+        </view>
+        <view class="source-info">
+          <text class="source-type">{{sourceAnimal.animalType === 'cat' ? '🐱' : '🐶'}} {{sourceAnimal.animalType === 'cat' ? '猫' : '狗'}}</text>
+          <text class="source-detail" wx:if="{{sourceAnimal.colorLabel}}">颜色：{{sourceAnimal.colorLabel}}</text>
+          <text class="source-detail" wx:if="{{sourceAnimal.sizeLabel}}">体型：{{sourceAnimal.sizeLabel}}</text>
+          <text class="source-detail" wx:if="{{sourceAnimal.locationName}}">地点：{{sourceAnimal.locationName}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 匹配结果标题 -->
+    <view class="result-header">
+      <text class="result-count">共 {{matchResults.length}} 个匹配结果</text>
+      <view class="match-direction">
+        <text wx:if="{{matchDirection === 'found_to_lost'}}">在走丢宠物中匹配</text>
+        <text wx:else>在捡到动物中匹配</text>
+      </view>
+    </view>
+
+    <!-- 匹配结果列表 -->
+    <view class="result-list" wx:if="{{matchResults.length > 0}}">
+      <view 
+        class="result-card" 
+        wx:for="{{matchResults}}" 
+        wx:key="index"
+        data-index="{{index}}"
+        bindtap="onResultClick"
+      >
+        <!-- 匹配目标动物信息 -->
+        <view class="result-animal">
+          <view class="result-avatar">
+            <image src="{{item.animal.images && item.animal.images[0] || '/images/default-pet.png'}}" mode="aspectFill"></image>
+          </view>
+          <view class="result-info">
+            <text class="result-type">{{item.animal.animalType === 'cat' ? '🐱' : '🐶'}} {{item.animal.animalType === 'cat' ? '猫' : '狗'}}</text>
+            <text class="result-detail" wx:if="{{item.animal.colorLabel}}">颜色：{{item.animal.colorLabel}}</text>
+            <text class="result-detail" wx:if="{{item.animal.sizeLabel}}">体型：{{item.animal.sizeLabel}}</text>
+            <text class="result-detail" wx:if="{{item.animal.locationName}}">地点：{{item.animal.locationName}}</text>
+          </view>
+        </view>
+
+        <!-- 匹配进度条 -->
+        <view class="match-progress-section">
+          <view class="progress-header">
+            <text class="progress-label">匹配度</text>
+            <text class="progress-value {{item.match.level}}">{{item.match.matchRate}}%</text>
+          </view>
+          <view class="progress-bar-bg">
+            <view 
+              class="progress-bar-fill {{item.match.level}}" 
+              style="width: {{item.match.matchRate}}%"
+            ></view>
+          </view>
+          <view class="match-level-label {{item.match.level}}">{{item.match.levelText}}</view>
+        </view>
+
+        <!-- 匹配详情 -->
+        <view class="match-details">
+          <view class="detail-item" wx:for="{{item.match.details}}" wx:key="item">
+            <text class="detail-label">{{item.item}}</text>
+            <view class="detail-bar-bg">
+              <view 
+                class="detail-bar-fill" 
+                style="width: {{item.maxScore > 0 ? (item.score / item.maxScore * 100) : 0}}%"
+              ></view>
+            </view>
+            <text class="detail-score">{{item.score}}/{{item.maxScore}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空结果 -->
+    <view class="empty-state" wx:if="{{matchResults.length === 0 && !loading}}">
+      <text class="icon">🔍</text>
+      <text class="text" wx:if="{{!sourceId}}">请在动物详情页点击"智能匹配"</text>
+      <text class="text" wx:else>暂无匹配结果</text>
+      <text class="sub-text" wx:if="{{!sourceId}}">先发布捡到或走丢信息，再从详情页进入匹配</text>
+      <text class="sub-text" wx:else>暂时没有找到匹配的动物信息</text>
+    </view>
+  </block>
+</view>

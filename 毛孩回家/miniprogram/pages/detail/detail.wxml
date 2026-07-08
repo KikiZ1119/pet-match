@@ -1,0 +1,173 @@
+<!-- pages/detail/detail.wxml - 动物详情页 -->
+<view class="detail-page">
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在加载详情...</text>
+  </view>
+
+  <scroll-view wx:elif="{{animal}}" class="detail-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+    <!-- 图片轮播 -->
+    <view class="swiper-section">
+      <swiper 
+        class="image-swiper" 
+        circular 
+        autoplay="{{images.length > 1}}" 
+        interval="4000" 
+        indicator-dots 
+        indicator-color="rgba(255,255,255,0.5)" 
+        indicator-active-color="#fff"
+      >
+        <swiper-item wx:for="{{images}}" wx:key="*this">
+          <image class="swiper-image" src="{{item}}" mode="aspectFill" />
+        </swiper-item>
+      </swiper>
+      <!-- 状态标签 -->
+      <view class="status-badge {{statusClass}}">
+        <text>{{animal.status}}</text>
+      </view>
+      <!-- 图片计数 -->
+      <view class="image-count" wx:if="{{images.length > 1}}">
+        <text>{{images.length}}张照片</text>
+      </view>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="section info-section">
+      <view class="info-header">
+        <text class="animal-type-icon">{{animal.animalType === 'cat' ? '🐱' : '🐕'}}</text>
+        <text class="animal-type-text">{{animal.animalType === 'cat' ? '猫' : '狗'}}</text>
+      </view>
+
+      <!-- 特征标签 -->
+      <view class="tag-section">
+        <view class="tag-item" wx:if="{{animal.color}}">
+          <text class="tag-label">颜色</text>
+          <text class="tag-value">{{colorLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.size}}">
+          <text class="tag-label">体型</text>
+          <text class="tag-value">{{sizeLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.gender}}">
+          <text class="tag-label">性别</text>
+          <text class="tag-value">{{genderLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.hasCollar !== undefined}}">
+          <text class="tag-label">项圈</text>
+          <text class="tag-value">{{animal.hasCollar === 'yes' ? '有' : animal.hasCollar === 'no' ? '无' : '不确定'}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.isNeutered}}">
+          <text class="tag-label">绝育</text>
+          <text class="tag-value">{{animal.isNeutered === 'yes' ? '已绝育' : animal.isNeutered === 'no' ? '未绝育' : '不确定'}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.breed}}">
+          <text class="tag-label">品种</text>
+          <text class="tag-value">{{breedLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.pattern}}">
+          <text class="tag-label">花纹</text>
+          <text class="tag-value">{{patternLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.age}}">
+          <text class="tag-label">年龄</text>
+          <text class="tag-value">{{ageLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.earType}}">
+          <text class="tag-label">耳朵</text>
+          <text class="tag-value">{{earTypeLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.tailType}}">
+          <text class="tag-label">尾巴</text>
+          <text class="tag-value">{{tailTypeLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.personality}}">
+          <text class="tag-label">性格</text>
+          <text class="tag-value">{{personalityLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.healthStatus}}">
+          <text class="tag-label">健康</text>
+          <text class="tag-value">{{healthLabel}}</text>
+        </view>
+        <view class="tag-item" wx:if="{{animal.collarType}}">
+          <text class="tag-label">项圈类型</text>
+          <text class="tag-value">{{collarTypeLabel}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 位置信息 -->
+    <view class="section location-section" wx:if="{{animal.locationName}}" bindtap="openMap">
+      <view class="section-header">
+        <text class="section-title">📍 位置</text>
+      </view>
+      <view class="location-content">
+        <text class="location-name">{{animal.locationName}}</text>
+        <text class="location-detail" wx:if="{{animal.locationAddress}}">{{animal.locationAddress}}</text>
+        <view class="map-btn">
+          <text class="map-btn-text">查看地图</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 时间信息 -->
+    <view class="section time-section">
+      <view class="time-row">
+        <text class="time-label">发布时间</text>
+        <text class="time-value">{{createTime}}</text>
+      </view>
+      <view class="time-row" wx:if="{{animal.eventTime}}">
+        <text class="time-label">{{animal.animalType === 'lost' ? '走丢时间' : '发现时间'}}</text>
+        <text class="time-value">{{animal.eventTime}}</text>
+      </view>
+      <view class="time-row">
+        <text class="time-label">浏览次数</text>
+        <text class="time-value">{{animal.viewCount || 0}}次</text>
+      </view>
+    </view>
+
+    <!-- 描述 -->
+    <view class="section desc-section" wx:if="{{animal.description}}">
+      <view class="section-header">
+        <text class="section-title">📝 描述</text>
+      </view>
+      <text class="desc-text">{{animal.description}}</text>
+    </view>
+
+    <!-- 联系方式 -->
+    <view class="section contact-section" wx:if="{{animal.contact}}">
+      <view class="section-header">
+        <text class="section-title">📞 联系方式</text>
+      </view>
+      <view class="contact-row" bindtap="copyContact" data-contact="{{animal.contact.phone}}">
+        <text class="contact-label">手机</text>
+        <text class="contact-value">{{animal.contact.phone || '未填写'}}</text>
+        <text class="copy-btn">复制</text>
+      </view>
+      <view class="contact-row" bindtap="copyContact" data-contact="{{animal.contact.wechat}}">
+        <text class="contact-label">微信</text>
+        <text class="contact-value">{{animal.contact.wechat || '未填写'}}</text>
+        <text class="copy-btn">复制</text>
+      </view>
+      <view class="contact-note">* 点击可复制联系方式</view>
+    </view>
+
+    <!-- 评论区域 -->
+    <comment-box animalId="{{animalId}}" collection="{{collectionName}}" />
+
+    <!-- 底部留白 -->
+    <view class="bottom-spacer"></view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar" wx:if="{{animal}}">
+    <view class="bar-action bar-share" bindtap="onShare">
+      <text class="action-icon">📤</text>
+      <text class="action-text">分享</text>
+    </view>
+    <view class="bar-action bar-match" bindtap="goMatch">
+      <text class="match-icon">🔍</text>
+      <text class="match-text">智能匹配</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,66 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/lost/lost",
+    "pages/found/found",
+    "pages/upload-lost/upload-lost",
+    "pages/upload-found/upload-found",
+    "pages/detail/detail",
+    "pages/match-result/match-result",
+    "pages/adopt/adopt",
+    "pages/my/my"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#4CAF50",
+    "navigationBarTitleText": "毛孩回家",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4CAF50",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/icon-home.png",
+        "selectedIconPath": "images/icon-home-active.png"
+      },
+      {
+        "pagePath": "pages/lost/lost",
+        "text": "走丢",
+        "iconPath": "images/icon-lost.png",
+        "selectedIconPath": "images/icon-lost-active.png"
+      },
+      {
+        "pagePath": "pages/found/found",
+        "text": "捡到",
+        "iconPath": "images/icon-found.png",
+        "selectedIconPath": "images/icon-found-active.png"
+      },
+      {
+        "pagePath": "pages/adopt/adopt",
+        "text": "领养",
+        "iconPath": "images/icon-adopt.png",
+        "selectedIconPath": "images/icon-adopt-active.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "images/icon-my.png",
+        "selectedIconPath": "images/icon-my-active.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "animal-card": "/components/animal-card/animal-card",
+    "classify-bar": "/components/classify-bar/classify-bar",
+    "search-bar": "/components/search-bar/search-bar",
+    "comment-box": "/components/comment-box/comment-box"
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

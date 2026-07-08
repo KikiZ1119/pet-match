@@ -1,0 +1,85 @@
+<!-- pages/found/found.wxml - 捡到动物浏览列表页 -->
+<view class="found-page">
+  <!-- 分类筛选栏 -->
+  <classify-bar 
+    filterGroups="{{filterGroups}}"
+    currentTab="{{currentTab}}"
+    bind:tabchange="onTabChange"
+    bind:filterchange="onFilterChange"
+    bind:sortchange="onSortChange"
+    bind:search="onSearch"
+  />
+
+  <!-- 筛选条件标签 -->
+  <view class="active-filters" wx:if="{{hasActiveFilters}}">
+    <view class="filter-chip-group">
+      <view 
+        class="filter-chip" 
+        wx:for="{{activeFilterTags}}" 
+        wx:key="key"
+        data-group="{{item.key}}"
+        bindtap="removeFilter"
+      >
+        <text>{{item.label}}</text>
+        <text class="chip-close">✕</text>
+      </view>
+      <view class="filter-clear" bindtap="clearAllFilters">清空全部</view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading && list.length === 0}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在加载...</text>
+  </view>
+
+  <!-- 动物列表 -->
+  <scroll-view 
+    class="list-scroll" 
+    scroll-y 
+    enhanced
+    show-scrollbar="{{false}}"
+    bindscrolltolower="onLoadMore"
+    refresher-enabled="{{true}}"
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+  >
+    <!-- 卡片列表 -->
+    <view class="card-list" wx:if="{{list.length > 0}}">
+      <view 
+        class="card-item" 
+        wx:for="{{list}}" 
+        wx:key="_id"
+      >
+        <animal-card 
+          animal="{{item}}"
+          colorLabel="{{item.colorLabel}}"
+          sizeLabel="{{item.sizeLabel}}"
+          genderLabel="{{item.genderLabel}}"
+          bind:click="onCardClick"
+        />
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && list.length === 0 && !loadingMore}}">
+      <text class="icon">🐾</text>
+      <text class="text">暂时没有捡到的动物信息</text>
+      <text class="sub-text">试试调整筛选条件，或发布新的信息</text>
+      <view class="btn-primary publish-btn" bindtap="goPublish">发布捡到信息</view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{loadingMore}}">
+      <text>加载更多...</text>
+    </view>
+    <view class="load-more" wx:if="{{!hasMore && list.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+  </scroll-view>
+
+  <!-- 浮动发布按钮 -->
+  <view class="fab" bindtap="goPublish">
+    <text class="icon">+</text>
+  </view>
+</view>
